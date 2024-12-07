@@ -11,9 +11,8 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const loadUser = async (userName: string) => {
-    setIsLoading(true);
-    setError(false);
     setUser(null);
+    setIsLoading(true);
 
     const res = await fetch(`https://api.github.com/users/${userName}`);
 
@@ -21,19 +20,21 @@ const Home = () => {
 
     setIsLoading(false);
 
-    if(res.status === 404) {
+    if (res.status === 404) {
       setError(true);
       return;
     }
 
-    const {avatar_url, login, location, followers, following} = data;
+    setError(false);
+
+    const { avatar_url, login, location, followers, following } = data;
 
     const userData: UserProps = {
-        avatar_url,
-        login,
-        location,
-        followers,
-        following,
+      avatar_url,
+      login,
+      location,
+      followers,
+      following,
     };
 
     setUser(userData);
@@ -41,9 +42,9 @@ const Home = () => {
 
   return (
     <div>
-      <Search loadUser={loadUser}/>
+      <Search loadUser={loadUser} />
       {isLoading && <Loader />}
-      {user && <User {...user}/>}
+      {user && <User {...user} />}
       {error && <Error />}
     </div>
   );
